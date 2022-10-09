@@ -10,7 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Configuration
+//@Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
@@ -24,9 +24,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 //			.authorizeRequests(auth -> auth.anyRequest().permitAll()); //permitir el acceso de cualquier suario
 			.authorizeHttpRequests()
-			.antMatchers(HttpMethod.GET,"/parking-spot/**").permitAll()
-			.antMatchers(HttpMethod.POST,"/parking-spot/create").hasRole("USER")
-			.antMatchers(HttpMethod.DELETE,"/parking-spot/**").hasRole("ADMIN")
+//			.antMatchers(HttpMethod.GET,"/parking-spot/**").permitAll()
+//			.antMatchers(HttpMethod.POST,"/parking-spot/create").hasRole("USER")
+//			.antMatchers(HttpMethod.DELETE,"/parking-spot/**").hasRole("ADMIN")
 			.anyRequest().authenticated()
 			.and()
 			.csrf().disable(); //requiere loguearse

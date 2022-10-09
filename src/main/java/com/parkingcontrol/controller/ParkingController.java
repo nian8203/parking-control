@@ -17,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,6 +42,7 @@ public class ParkingController {
 	@Autowired
 	private ParkingServiceImpl service;
 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/create")
 	public ResponseEntity<?> create(@Valid @RequestBody ParkingSpotDto parkingSpotDto, BindingResult result) {
 
@@ -82,11 +84,13 @@ public class ParkingController {
 
 	}
 
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	@GetMapping("/get")
 	public ResponseEntity<List<ParkingSpot>> getAll() {
 		return ResponseEntity.status(HttpStatus.OK).body(service.getAll());
 	}
 
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	@GetMapping("/get/{id}")
 	public ResponseEntity<?> getById(@PathVariable UUID id) {
 		ParkingSpot spot = null;
@@ -108,6 +112,7 @@ public class ParkingController {
 		return new ResponseEntity<ParkingSpot>(spot, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping("delete/{id}")
 	public ResponseEntity<?> delete(@PathVariable UUID id){
 		try {
@@ -123,7 +128,7 @@ public class ParkingController {
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 	}
 	
-	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping("/update/{id}")
 	public ResponseEntity<?> update(@PathVariable UUID id, @RequestBody ParkingSpotDto parkingSpotDto, @Valid BindingResult result){
 		var parkingSpotActual = service.getById(id);
